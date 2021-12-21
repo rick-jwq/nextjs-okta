@@ -1,8 +1,9 @@
 import React from 'react'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import Typography from '@mui/material/Typography'
 import Link from 'next/link'
 import useListData from '../hooks/useListData'
+import { NextPageWithLayout } from './_app'
 
 const List1 = () => {
   const { data, status } = useListData.useListData1()
@@ -26,7 +27,7 @@ const List1 = () => {
 }
 
 const List2 = () => {
-  const { data, status } = useListData.useListData1()
+  const { data, status } = useListData.useListData2()
   if (status === 'loading') {
     return <p>Loading...</p>
   }
@@ -46,7 +47,7 @@ const List2 = () => {
   )
 }
 
-export default function List() {
+const List: NextPageWithLayout = () => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation(() => removeFirst(), {
@@ -85,3 +86,7 @@ export default function List() {
     </div>
   )
 }
+
+List.requireAuth = true
+
+export default List

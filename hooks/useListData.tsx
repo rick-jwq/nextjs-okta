@@ -21,7 +21,7 @@ const useListData2 = () =>
     },
     {
       staleTime: 10000, // default 0 sec
-      cacheTime: 0, // default 5 minutes,
+      cacheTime: 50000, // default 5 minutes,
       refetchOnMount: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,

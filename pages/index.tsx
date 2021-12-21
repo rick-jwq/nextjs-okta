@@ -1,31 +1,18 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
-import useListData from '../hooks/useListData'
+import { NextPageWithLayout } from './_app'
 
-const Home: NextPage = () => {
-  const queryClient = useQueryClient()
+const Home: NextPageWithLayout = () => {
   const { data: session } = useSession()
-  const { data, status } = useListData.useListData1()
-  let button
-  if (session) {
-    button = (
-      <button className='btn btn-secondary' onClick={() => signOut()}>
-        Logout
-      </button>
-    )
-  } else {
-    button = (
-      <button className='btn btn-primary' onClick={() => signIn('okta', { redirect: true })}>
-        Login
-      </button>
-    )
-  }
-  console.log(queryClient.getQueryCache())
+  let button = (
+    <button className='btn btn-secondary' onClick={() => signOut({ callbackUrl: '/signIn' })}>
+      Logout
+    </button>
+  )
+
   return (
     <div className={styles.container}>
       <Head>
@@ -36,11 +23,11 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <Link href='/text'>
-          <h1>Texts</h1>
+          <h1 style={{ cursor: 'pointer' }}>Go to List Data page</h1>
         </Link>
         {button}
         <h1 className={styles.title}>
-          Welcome to <a href='https://nextjs.org'>Next.js!</a>
+          Welcome to <a href='https://nextjs.org'>Next.js! </a> {`'${session?.userID}'`}
         </h1>
 
         <p className={styles.description}>
@@ -88,5 +75,7 @@ const Home: NextPage = () => {
     </div>
   )
 }
+
+Home.requireAuth = true
 
 export default Home
